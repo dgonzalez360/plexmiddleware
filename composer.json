@@ -1,0 +1,43 @@
+{
+    "name": "david-casini/craft-plex-integration",
+    "description": "Middleware integration for Plex",
+    "type": "craft-plugin",
+    "license": "proprietary",
+    "support": {
+        "email": "davidg@mwcompany.com",
+        "issues": "https://github.com/dgonzalez360/craft-plex-integration.git/issues?state=open",
+        "source": "https://github.com/dgonzalez360/craft-plex-integration.git",
+        "docs": "https://github.com/dgonzalez360/craft-plex-integration.git"
+    },
+    "require": {
+        "craftcms/cms": "^4.0",
+		"craftcms/commerce": "^4.0",
+        "php": ">=8.0.2"
+    },
+    "require-dev": {
+        "craftcms/ecs": "dev-main",
+        "craftcms/phpstan": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "davidcasini\\craftplexintegration\\": "src/"
+        }
+    },
+    "extra": {
+        "handle": "plex-integration",
+        "name": "plex_integration",
+        "developer": "David Casini",
+        "documentationUrl": "https://github.com/dgonzalez360/craft-plex-integration.git",
+        "class": "davidcasini\\craftplexintegration\\PlexIntegration"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.0.2"
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
+    }
+}

@@ -1,0 +1,52 @@
+{# @var plugin \davidcasini\craftplexintegration\PlexIntegration #}
+{# @var settings \davidcasini\craftplexintegration\models\Settings #}
+
+{% import '_includes/forms.twig' as forms %}
+
+{{ forms.textField({
+    label: "Middleware hook url",
+    name: 'callbackUrl',
+    readonly: true,
+    instructions: "",
+    value: settings.getRedirectUrl(),
+}) }}
+
+<hr>
+
+{{ forms.textField({
+    label: "Middleware Signin Secret",
+    name: 'signingSecret',
+    id: 'signingSecret',
+    suggestEnvVars: true,
+    instructions: "",
+    value: settings.signingSecret,
+}) }}
+
+<hr>
+
+{{ forms.autosuggestField({
+    label: "Middleware URL",
+    id: 'middlewareUrl',
+    name: 'middlewareUrl',
+    suggestEnvVars: true,
+    value: settings.middlewareUrl,
+    placeholder: ""
+}) }}
+
+{{ forms.autosuggestField({
+    label: "Middleware User",
+    id: 'middlewareUser',
+    name: 'middlewareUser',
+    suggestEnvVars: true,
+    value: settings.middlewareUser,
+    placeholder: ""
+}) }}
+
+{{ forms.autosuggestField({
+    label: "Middleware Pass",
+    id: 'middlewarePass',
+    name: 'middlewarePass',
+    suggestEnvVars: true,
+    value: settings.middlewarePass,
+    placeholder: ""
+}) }}
