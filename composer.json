@@ -5,9 +5,9 @@
     "license": "proprietary",
     "support": {
         "email": "davidg@mwcompany.com",
-        "issues": "https://github.com/dgonzalez360/craft-plex-integration.git/issues?state=open",
-        "source": "https://github.com/dgonzalez360/craft-plex-integration.git",
-        "docs": "https://github.com/dgonzalez360/craft-plex-integration.git"
+        "issues": "https://github.com/dgonzalez360/plexmiddleware.git/issues?state=open",
+        "source": "https://github.com/dgonzalez360/plexmiddleware.git",
+        "docs": "https://github.com/dgonzalez360/plexmiddleware.git"
     },
     "require": {
         "craftcms/cms": "^4.0",
@@ -27,7 +27,7 @@
         "handle": "plex-integration",
         "name": "plex_integration",
         "developer": "David Casini",
-        "documentationUrl": "https://github.com/dgonzalez360/craft-plex-integration.git",
+        "documentationUrl": "https://github.com/dgonzalez360/plexmiddleware.git",
         "class": "davidcasini\\craftplexintegration\\PlexIntegration"
     },
     "config": {
