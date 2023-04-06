@@ -1,6 +1,7 @@
 <?php
 
 namespace davidcasini\craftplexintegration\console\controllers;
+use davidcasini\craftplexintegration\PlexIntegration;
 
 use Craft;
 use craft\console\Controller;
