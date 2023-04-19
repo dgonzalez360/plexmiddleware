@@ -1,7 +1,6 @@
 <?php
 
 namespace davidcasini\craftplexintegration\console\controllers;
-use davidcasini\craftplexintegration\PlexIntegration;
 
 use Craft;
 use craft\console\Controller;
@@ -14,6 +13,8 @@ use craft\commerce\Plugin;
 use GuzzleHttp\Client;
 
 use craft\commerce\models\OrderStatus;
+use davidcasini\craftplexintegration\PlexIntegration;
+use craft\helpers\App;
 
 /**
  * Sync Pending Orders controller
@@ -90,9 +91,9 @@ class SyncPendingOrdersController extends Controller
             ];
 
             try {
-                $middlewareUser = PlexIntegration::$plugin->getSettings()->middlewareUser;
-                $middlewarePass = PlexIntegration::$plugin->getSettings()->middlewarePass;
-                $middlewareUrl = PlexIntegration::$plugin->getSettings()->middlewareUrl;
+                $middlewareUser = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewareUser);
+                $middlewarePass = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewarePass);
+                $middlewareUrl = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewareUrl);
 
                 $client = new Client([
                     'headers' => [ 'Content-Type' => 'application/json', 'Authorization' => 'Basic '.base64_encode($middlewareUser.":".$middlewarePass) ]
