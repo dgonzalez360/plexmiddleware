@@ -9,3 +9,6 @@
 ## 1.0.2
 - [FIX] Added the .env var parsing for Signature
 - [FIX] Addeed the order status update by status handle
+
+## 1.0.3
+- [FIX] Order status handle error
