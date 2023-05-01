@@ -105,7 +105,7 @@ class PlexIntegration extends Plugin
         
         $commerce = Plugin::getInstance();
 
-        // Create an "avatax field group"
+        // Create an "Middleware field group"
         $group = new FieldGroup();
         $group->name = 'Middleware';
 

@@ -31,7 +31,9 @@ class Service extends Component
                     }
                     $order->setFieldValues(['plexId' => $records]);
                 }
-                $order->orderStatusId = ($payload['status'] == 'synced' ? 6 : 7);
+                $failedSync = Plugin::getInstance()->getOrderStatuses()->getOrderStatusByHandle('syncErrorPlex')->id;
+                $successfulSync = Plugin::getInstance()->getOrderStatuses()->getOrderStatusByHandle('syncedWithPlex')->id;
+                $order->orderStatusId = ($payload['status'] == 'synced' ? $failedSync : $successfulSync);
                 
                 Craft::$app->getElements()->saveElement($order, false); 
                 return true;

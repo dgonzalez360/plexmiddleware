@@ -11,6 +11,7 @@ use craft\web\View;
 use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
 use yii\web\JsonResponseFormatter;
+use craft\helpers\App;
 
 class DefaultController extends Controller
 {
@@ -68,7 +69,7 @@ class DefaultController extends Controller
     protected function verifySignature()
     {
         $signature = Craft::$app->getRequest()->getHeaders()->get('Middleware-Signature');
-        $secret = PlexIntegration::$plugin->getSettings()->signingSecret;
+        $secret = App::parseEnv(PlexIntegration::$plugin->getSettings()->signingSecret);
         $payload = Craft::$app->getRequest()->getRawBody();
 
         if (!$signature) {
