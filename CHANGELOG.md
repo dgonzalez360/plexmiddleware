@@ -12,3 +12,6 @@
 
 ## 1.0.3
 - [FIX] Order status handle error
+
+## 1.0.4
+- [FIX] Using the correct SalePrice on the payload creation

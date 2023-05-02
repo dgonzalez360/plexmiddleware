@@ -156,7 +156,7 @@ class SyncPendingOrdersController extends Controller
         $line = [];
         if($products){
             foreach ($products as $product) {
-                $productPrice = ((float) number_format(($product['snapshot']['price'] - (($product['snapshot']['price'])/$order->storedItemTotal) * $order->storedTotalDiscount), 2, '.', ''));
+                $productPrice = ((float) number_format(($product['salePrice'] - (($product['salePrice'])/$order->storedItemTotal) * $order->storedTotalDiscount), 2, '.', ''));
                 $line[]=[
                     'partNumber' => $product['sku'],
                     'price' => $productPrice,
