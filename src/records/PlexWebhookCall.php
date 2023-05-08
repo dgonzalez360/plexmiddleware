@@ -43,9 +43,23 @@ class PlexWebhookCall extends ActiveRecord
             return;
         }
 
-        // Type exist, we execute. 
         $service = new Service();
-        $update = $service->updateOrder($this->getPayload());
+
+        switch ($this->type) {
+            case 'update_plexorder':
+                $update = $service->updateOrder($this->getPayload());
+                break;
+
+            case 'update_shippinginfo':
+                $update = $service->updateShipping($this->getPayload());
+                break;
+            
+            default:
+                throw WebhookFailed::jobClassDoesNotExist($jobClass, $this);
+                $update = '';
+                break;
+        }
+        // Type exist, we execute. 
         
         return $update;
 

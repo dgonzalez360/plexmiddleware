@@ -19,7 +19,8 @@ class Settings extends Model
 
     /** @var array */
     public $jobs = [
-        'update_plexorder'
+        'update_plexorder',
+        'update_shippinginfo'
     ];
 
     /** @var string */

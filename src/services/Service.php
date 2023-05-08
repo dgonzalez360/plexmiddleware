@@ -11,6 +11,7 @@ use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 
 use \craft\commerce\elements\Order;
+use craft\commerce\elements\Fulfillment;
 use \craft\elements\Address;
 use \craft\elements\User;
 use craft\commerce\services\Transactions;
@@ -41,4 +42,32 @@ class Service extends Component
         }
         return false;
     }
+
+    public function updateShipping(array $payload): bool
+    {
+        if($payload['id']){
+            $order = Order::find()->shortNumber($payload['id'])->one();
+            if($order){
+                //dump($payload['products']);
+
+                $fulfillment = new Fulfillment();
+                $fulfillment->orderId = $order->id;
+                $fulfillment->trackingNumber = $trackingNumber;
+                $fulfillment->isShipped = true;
+
+                Craft::$app->getElements()->saveElement($fulfillment);
+                $order->setFieldValuesFromPost(['fulfillments' => [$fulfillment]]);
+                
+                $partial = Plugin::getInstance()->getOrderStatuses()->getOrderStatusByHandle('partiallyFulfilled')->id;
+                $shipped = Plugin::getInstance()->getOrderStatuses()->getOrderStatusByHandle('fulfilled')->id;
+                $order->orderStatusId = ($payload['orderShippingStatus'] == 'Partialy shipped' ? $partial : $shipped);
+                
+                Craft::$app->getElements()->saveElement($order, false); 
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
 }

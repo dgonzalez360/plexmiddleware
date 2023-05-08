@@ -15,3 +15,10 @@
 
 ## 1.0.4
 - [FIX] Using the correct SalePrice on the payload creation
+
+## 1.0.5-beta
+- [NEW] Added the new type to the job list, update_shippinginfo. 
+- [NEW] Added the updateShippingLogic
+
+## 1.0.5-beta2
+- [FIX] fixed dyvision by zero due to free order test
