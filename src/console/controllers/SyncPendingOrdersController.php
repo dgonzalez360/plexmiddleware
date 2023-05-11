@@ -91,7 +91,6 @@ class SyncPendingOrdersController extends Controller
                     'products' => $this->getProducts($order)
                 ]
             ];
-
             try {
                 $middlewareUser = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewareUser);
                 $middlewarePass = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewarePass);
