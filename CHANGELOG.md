@@ -26,3 +26,6 @@
 ## 1.0.6
 - [FIX] Added the address id to the middleware payload
 - [NEW] Added the fullfilment webhook
+
+## 1.0.7
+- [FIX] Address ID
