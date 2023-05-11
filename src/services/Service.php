@@ -11,11 +11,14 @@ use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 
 use \craft\commerce\elements\Order;
-use craft\commerce\elements\Fulfillment;
+use craft\commerce\elements\Product;
+use tasdev\orderfulfillments\OrderFulfillments;
+use tasdev\orderfulfillments\models\Fulfillment;
 use \craft\elements\Address;
 use \craft\elements\User;
 use craft\commerce\services\Transactions;
 use craft\commerce\Plugin;
+use craft\commerce\Plugin as Commerce;
 
 class Service extends Component
 {
@@ -48,26 +51,33 @@ class Service extends Component
         if($payload['id']){
             $order = Order::find()->shortNumber($payload['id'])->one();
             if($order){
-                //dump($payload['products']);
-
-                $fulfillment = new Fulfillment();
-                $fulfillment->orderId = $order->id;
-                $fulfillment->trackingNumber = $trackingNumber;
-                $fulfillment->isShipped = true;
-
-                Craft::$app->getElements()->saveElement($fulfillment);
-                $order->setFieldValuesFromPost(['fulfillments' => [$fulfillment]]);
-                
                 $partial = Plugin::getInstance()->getOrderStatuses()->getOrderStatusByHandle('partiallyFulfilled')->id;
                 $shipped = Plugin::getInstance()->getOrderStatuses()->getOrderStatusByHandle('fulfilled')->id;
-                $order->orderStatusId = ($payload['orderShippingStatus'] == 'Partialy shipped' ? $partial : $shipped);
-                
-                Craft::$app->getElements()->saveElement($order, false); 
-                return true;
+                $products = $payload['products'];
+
+                $fulfillmentLinesService = OrderFulfillments::getInstance()->getFulfillmentLines();
+                $lineItems = $order->getLineItems();
+
+                foreach ($products as $sku => $shippmentData) {
+                    foreach($lineItems as $li){
+                        if($li['sku'] == $sku){
+                            
+                            $fulfillment = OrderFulfillments::getInstance()->getFulfillments()->createFulfillment($order->id);
+                            $fulfillment->trackingNumber = $shippmentData['tracking'][0];
+                            $fulfillment->trackingCarrierClass = 'tasdev\orderfulfillments\carriers\FedEx';
+
+                            $lineItem = Commerce::getInstance()->getLineItems()->getLineItemById($li->id);
+
+                            $fulfillmentLine = $fulfillmentLinesService->createFulfillmentLine($lineItem, intval($shippmentData['quantity']));
+                            $fulfillment->addFulfillmentLine($fulfillmentLine);
+                            $fulfillment->validate();
+                            OrderFulfillments::getInstance()->getFulfillments()->saveFulfillment($fulfillment, false);
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;
     }
-
-    
 }

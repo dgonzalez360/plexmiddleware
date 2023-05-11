@@ -22,3 +22,7 @@
 
 ## 1.0.5-beta2
 - [FIX] fixed dyvision by zero due to free order test
+
+## 1.0.6
+- [FIX] Added the address id to the middleware payload
+- [NEW] Added the fullfilment webhook

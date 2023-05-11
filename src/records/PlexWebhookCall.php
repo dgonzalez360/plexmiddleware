@@ -80,7 +80,11 @@ class PlexWebhookCall extends ActiveRecord
 
     protected function determineJobClass(string $eventType): string
     {
-        return in_array($eventType, PlexIntegration::$plugin->settings->jobs) ?? '';
+        $availableMethods = [
+            'update_plexorder',
+            'update_shippinginfo'
+        ];
+        return in_array($eventType, $availableMethods) ?? '';
     }
 
     protected function clearException()

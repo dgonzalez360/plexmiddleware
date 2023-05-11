@@ -59,6 +59,7 @@ class SyncPendingOrdersController extends Controller
                     'lastName' => $customer->lastName
                 ],
                 'deliveryAddress' => [
+                    'addressInternalId' => $shippingAddress->id,
 					'customerName' => $shippingAddress->fullName,
                     'address' => $shippingAddress->addressLine1,
                     'address2' => $shippingAddress->addressLine2,
@@ -69,6 +70,7 @@ class SyncPendingOrdersController extends Controller
 					'phone' => $shippingAddress->getFieldValue('phoneNumber')
                 ],
                 'billingAddress' => [
+                    'addressInternalId' => $billingAddress->id,
                     'customerName' => $billingAddress->fullName,
                     'address' => $billingAddress->addressLine1,
                     'address2' => $billingAddress->addressLine2,
