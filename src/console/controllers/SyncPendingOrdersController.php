@@ -40,7 +40,7 @@ class SyncPendingOrdersController extends Controller
     public function actionIndex(): int
     {
         //Craft::dd($body);
-        //$orders = Order::find()->id(188173)->all();
+        //$orders = Order::find()->id(213663)->all();
         $orders = Order::find()->orderStatusId(1)->all();
         foreach ($orders as $order) {
             //Craft::dd($order);
@@ -86,11 +86,12 @@ class SyncPendingOrdersController extends Controller
                     'taxTotal' => (float) number_format($order->storedTotalTax, 2, '.', ''),
                     'shippingTotal' => (float) number_format($order->storedTotalShippingCost, 2, '.', ''),
                     'discountAmount' => (float) number_format($order->storedTotalDiscount, 2, '.', ''),
-                    'paymentMethod' => $this->getPaymentMethod($order->id)['method'],
-                    'paymentId' => $this->getPaymentMethod($order->id)['id'],
+                    'paymentMethod' => $this->getPaymentMethod($order)['method'],
+                    'paymentId' => $this->getPaymentMethod($order)['id'],
                     'products' => $this->getProducts($order)
                 ]
             ];
+
             try {
                 $middlewareUser = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewareUser);
                 $middlewarePass = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewarePass);
@@ -144,10 +145,11 @@ class SyncPendingOrdersController extends Controller
     }
 
     public function getPaymentMethod($order){
-        $paymentReference = Plugin::getInstance()->getTransactions()->getAllTransactionsByOrderId($order);
-        
+        //$paymentReference = Plugin::getInstance()->getTransactions()->getAllTransactionsByOrderId($order);
+        $paymentReference = $order->getLastTransaction();
 		if($paymentReference){
-			return ['method' => $paymentReference[0]->gatewayId, 'id' => $paymentReference[0]->reference];
+            $gateway = Plugin::getInstance()->getGateways()->getGatewayById($paymentReference->gatewayId);
+			return ['method' => $gateway->name, 'id' => $paymentReference->reference];
         }
         return ['method' => 'N/A', 'id' => 'N/A'];
     }

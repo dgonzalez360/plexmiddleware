@@ -29,3 +29,7 @@
 
 ## 1.0.7
 - [FIX] Address ID
+
+## 1.0.8
+- [FIX] Fixed the transaction ID 
+- [FIX] Fixed the payment method name
