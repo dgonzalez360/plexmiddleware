@@ -40,8 +40,8 @@ class SyncPendingOrdersController extends Controller
      */
     public function actionIndex(): int
     {
-        //$orders = Order::find()->orderStatusId(1)->all();
-        $orders = Order::find()->id(235821)->all();
+        $orders = Order::find()->orderStatusId(1)->all();
+        //$orders = Order::find()->id(235821)->all();
         foreach ($orders as $order) {
             $customer = User::find()->id($order->customerId)->one();
             $shippingAddress = Address::find()->id($order->shippingAddressId)->one();
@@ -88,8 +88,6 @@ class SyncPendingOrdersController extends Controller
                     'discounts' => $this->getDiscounts($order)
                 ]
             ];
-
-            Craft::dd($plexOrder);
 
             try {
                 $middlewareUser = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewareUser);
