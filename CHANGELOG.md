@@ -33,3 +33,7 @@
 ## 1.0.8
 - [FIX] Fixed the transaction ID 
 - [FIX] Fixed the payment method name
+
+## 1.0.9
+- [NEW] Added the shipping method to the payload
+- [NEW] Added the discounts array

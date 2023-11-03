@@ -6,6 +6,7 @@ use Craft;
 use craft\console\Controller;
 use yii\console\ExitCode;
 use \craft\commerce\elements\Order;
+use craft\commerce\models\Discount;
 use \craft\elements\Address;
 use \craft\elements\User;
 use craft\commerce\services\Transactions;
@@ -39,18 +40,12 @@ class SyncPendingOrdersController extends Controller
      */
     public function actionIndex(): int
     {
-        //Craft::dd($body);
-        //$orders = Order::find()->id(213663)->all();
-        $orders = Order::find()->orderStatusId(1)->all();
+        //$orders = Order::find()->orderStatusId(1)->all();
+        $orders = Order::find()->id(235821)->all();
         foreach ($orders as $order) {
-            //Craft::dd($order);
-            //Craft::dd($order->getLineItems());
             $customer = User::find()->id($order->customerId)->one();
             $shippingAddress = Address::find()->id($order->shippingAddressId)->one();
             $billingAddress = Address::find()->id($order->billingAddressId)->one();
-            //Craft::dd($customer);
-            //Craft::dd($shippingAddress->getFieldValue('phoneNumber'));
-            //Craft::dd($billingAddress);
 
             $plexOrder = [
                 'customer' => [
@@ -88,9 +83,13 @@ class SyncPendingOrdersController extends Controller
                     'discountAmount' => (float) number_format($order->storedTotalDiscount, 2, '.', ''),
                     'paymentMethod' => $this->getPaymentMethod($order)['method'],
                     'paymentId' => $this->getPaymentMethod($order)['id'],
-                    'products' => $this->getProducts($order)
+                    'shippingMethod' => $order->shippingMethodHandle ?? 'FEDEX_GROUND' ,
+                    'products' => $this->getProducts($order),
+                    'discounts' => $this->getDiscounts($order)
                 ]
             ];
+
+            Craft::dd($plexOrder);
 
             try {
                 $middlewareUser = App::parseEnv(PlexIntegration::$plugin->getSettings()->middlewareUser);
@@ -122,26 +121,13 @@ class SyncPendingOrdersController extends Controller
         return ExitCode::OK;
     }
 
-    public function getNoteWithPayment($order){
-        $paymentReference = Plugin::getInstance()->getTransactions()->getAllTransactionsByOrderId($order);
-        
-		if($paymentReference){
-			$message = 'Payment Method: '.$paymentReference[0]->gatewayId. '. ID:'.$paymentReference[0]->reference;
-		}
-
-        /*
-		$vouchers = $order->getCartRules();
-
-		if($vouchers){
-			foreach ($vouchers as $key => $voucher) {
-				$message .= '| Discount :'.$voucher['name'].' - value:'.$voucher['value'];
-			}
-			$message .= '** TOTAL DISCOUNT :'.$order->total_discounts.' **';
-
-		}
-        */
-		
-		return $message;
+    public function getDiscounts($order){
+        return collect($order->getAdjustments())->filter(function ($v) { return $v->type == 'discount'; })->values()->map(function($v) {
+            return [
+                'code' => $v->name,
+                'amount' => $v->amount
+            ];
+        })->toArray();
     }
 
     public function getPaymentMethod($order){
