@@ -37,3 +37,6 @@
 ## 1.0.9
 - [NEW] Added the shipping method to the payload
 - [NEW] Added the discounts array
+
+## 1.1.0
+- [FIX] Discount calculation error

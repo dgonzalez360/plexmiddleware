@@ -144,7 +144,7 @@ class SyncPendingOrdersController extends Controller
         if($products){
             foreach ($products as $product) {
                 if($order->storedItemTotal != 0)
-                    $productPrice = ((float) number_format(($product['salePrice'] - (($product['salePrice'])/$order->storedItemTotal) * $order->storedTotalDiscount), 2, '.', ''));
+                    $productPrice = ((float) number_format(($product['salePrice'] - (($product['salePrice'])/$order->storedItemSubtotal) * abs($order->storedTotalDiscount)), 2, '.', ''));
                 else
                     $productPrice = 0;
                 $line[]=[
