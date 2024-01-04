@@ -72,12 +72,12 @@ class Service extends Component
                             $fulfillment->addFulfillmentLine($fulfillmentLine);
                             $fulfillment->validate();
                             OrderFulfillments::getInstance()->getFulfillments()->saveFulfillment($fulfillment, false);
-                            return true;
+                            
                         }
                     }
                 }
             }
         }
-        return false;
+        return true;
     }
 }

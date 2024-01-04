@@ -40,3 +40,6 @@
 
 ## 1.1.0
 - [FIX] Discount calculation error
+
+## 1.1.1
+- [FIX] Fulfillment fix for multiple tracking numbers
