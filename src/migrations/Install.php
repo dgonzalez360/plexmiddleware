@@ -60,6 +60,19 @@ class Install extends Migration
             );
         }
 
+        $shippingSchema = Craft::$app->db->schema->getTableSchema('{{%plexshipping_info}}');
+        if ($shippingSchema === null) {
+            $this->createTable(
+                '{{%plexshipping_info}}',
+                [
+                    'id'                => $this->primaryKey(),
+                    'tracking_number'   => $this->string(255),
+                    'carrier'           => $this->string(255),
+                    'estimated_delivery'=> $this->string(255),
+                ]
+            );
+        }
+
         return $tablesCreated;
     }
 
@@ -94,6 +107,7 @@ class Install extends Migration
     protected function removeTables()
     {
         $this->dropTableIfExists('{{%plexwebhooks_plexwebhookcall}}');
+        $this->dropTableIfExists('{{%plexshipping_info}}');
     }
 
     protected function createMissingOrderStatuses(){

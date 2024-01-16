@@ -3,6 +3,7 @@
 namespace davidcasini\craftplexintegration\services;
 
 use davidcasini\craftplexintegration\PlexIntegration;
+use davidcasini\craftplexintegration\services\TrackingService;
 
 use Craft;
 use craft\base\Component;
@@ -72,6 +73,13 @@ class Service extends Component
                             $fulfillment->addFulfillmentLine($fulfillmentLine);
                             $fulfillment->validate();
                             OrderFulfillments::getInstance()->getFulfillments()->saveFulfillment($fulfillment, false);
+                            
+                            $trackingService = new TrackingService();
+                            $trackingService->saveTrackingInfo([
+                                'tracking_number' => $shippmentData['tracking'][0],
+                                'carrier' => $shippmentData['carrier'],
+                                'estimated_delivery' => $shippmentData['estimated_delivery']
+                            ]);
                             
                         }
                     }

@@ -19,6 +19,10 @@ use craft\models\FieldGroup;
 use craft\events\PluginEvent;
 use craft\services\Plugins;
 
+use craft\commerce\elements\Order;
+use craft\events\DefineBehaviorsEvent;
+use davidcasini\craftplexintegration\behaviors\OrderTrackingBehavior;
+
 /**
  * plex_integration plugin
  *
@@ -95,6 +99,11 @@ class PlexIntegration extends Plugin
                 }
             }
         );
+
+        // Add fulfillments behavior to access fulfillments like $order->fulfillments.
+        Event::on(Order::class, Model::EVENT_DEFINE_BEHAVIORS, function (DefineBehaviorsEvent $event) {
+            $event->behaviors[] = OrderTrackingBehavior::class;
+        });
     }
 
     public function onAfterInstall()

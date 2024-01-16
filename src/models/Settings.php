@@ -16,6 +16,8 @@ class Settings extends Model
     public string $middlewarePass = '';
     public string $signingSecret = '';
     public string $middlewareUrl = '';
+    public string $middlewareFedexClientId = '';
+    public string $middlewareFedexClientSecret = '';
 
     /** @var array */
     public $jobs = [
@@ -33,7 +35,7 @@ class Settings extends Model
     public function rules(): array
     {
         return [
-            [['middlewareUser', 'middlewarePass', 'middlewareUrl', 'signingSecret'], 'required'],
+            [['middlewareUser', 'middlewarePass', 'middlewareUrl', 'signingSecret', 'middlewareFedexClientId', 'middlewareFedexClientSecret'], 'required'],
         ];
     }
 
@@ -56,6 +58,17 @@ class Settings extends Model
     {
         return $parse ? App::parseEnv($this->middlewareUrl) : $this->middlewareUrl;
     }
+
+    public function getMiddlewareFedexClientId(bool $parse = true): string
+    {
+        return $parse ? App::parseEnv($this->middlewareFedexClientId) : $this->middlewareFedexClientId;
+    }
+
+    public function getMiddlewareFedexClientSecret(bool $parse = true): string
+    {
+        return $parse ? App::parseEnv($this->middlewareFedexClientSecret) : $this->middlewareFedexClientSecret;
+    }
+    
 
     public function getRedirectUrl(): string
     {

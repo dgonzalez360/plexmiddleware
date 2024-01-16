@@ -50,3 +50,21 @@
     value: settings.middlewarePass,
     placeholder: ""
 }) }}
+
+{{ forms.autosuggestField({
+    label: "FEDEX API Client ID ",
+    id: 'middlewareFedexClientId',
+    name: 'middlewareFedexClientId',
+    suggestEnvVars: true,
+    value: settings.middlewareFedexClientId,
+    placeholder: ""
+}) }}
+
+{{ forms.autosuggestField({
+    label: "FEDEX API Client Secret ",
+    id: 'middlewareFedexClientSecret',
+    name: 'middlewareFedexClientSecret',
+    suggestEnvVars: true,
+    value: settings.middlewareFedexClientSecret,
+    placeholder: ""
+}) }}
