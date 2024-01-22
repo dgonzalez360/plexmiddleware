@@ -50,6 +50,20 @@ class TrackingService extends Component
     public function getEstimatedArrival(string $trackingNumber) : ?string 
     {
         if($trackingNumber){
+            $trackingInfo = $this->getStoredTrackingInfo($trackingNumber);
+            if($trackingInfo && isset($trackingInfo[0])){
+                $dateTime = new DateTime($trackingInfo[0]['estimated_delivery']);
+                return $dateTime->format('F jS');
+            }
+            return 'Not Available';
+
+        }
+        return 'Not Available';
+    }
+
+    public function getEstimatedArrivalFromFedex(string $trackingNumber) : ?string 
+    {
+        if($trackingNumber){
             $trackingInfo = $this->getTrackingInfo($trackingNumber);
             if($trackingInfo){
                 if($trackingInfo['dateAndTimes'][0]->dateTime){
@@ -59,7 +73,7 @@ class TrackingService extends Component
                 return 'Not available';
             } 
         }
-        return '';
+        return 'Not Available';
     }
 
     public function saveTrackingInfo(array $data){
@@ -70,6 +84,18 @@ class TrackingService extends Component
         $record->estimated_delivery = $data['estimated_delivery'];
         return $record->save();
 
+    }
+
+    public function getStoredTrackingInfo(string $trackingNumber): ?array
+    {
+        return (new Query())
+            ->select([
+                'carrier',
+                'estimated_delivery',
+            ])
+            ->from(['{{%plexshipping_info}}'])
+            ->where(['tracking_number' => $trackingNumber])
+            ->all();
     }
     
 }

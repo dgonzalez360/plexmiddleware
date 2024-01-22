@@ -43,3 +43,8 @@
 
 ## 1.1.1
 - [FIX] Fulfillment fix for multiple tracking numbers
+
+## 1.2.0
+- [NEW] Added the Fedex Integration
+- [NEW] Added the migration to create the ETA delivery from the Middleware
+
