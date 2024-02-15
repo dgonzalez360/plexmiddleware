@@ -48,3 +48,5 @@
 - [NEW] Added the Fedex Integration
 - [NEW] Added the migration to create the ETA delivery from the Middleware
 
+## 1.2.1
+- [FIX] Fix to return 'Not Available' when the estimated delivery is empty

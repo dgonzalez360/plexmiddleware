@@ -52,11 +52,14 @@ class TrackingService extends Component
         if($trackingNumber){
             $trackingInfo = $this->getStoredTrackingInfo($trackingNumber);
             if($trackingInfo && isset($trackingInfo[0])){
-                $dateTime = new DateTime($trackingInfo[0]['estimated_delivery']);
-                return $dateTime->format('F jS');
+                try {
+                    $dateTime = new DateTime($trackingInfo[0]['estimated_delivery']);
+                    return $dateTime->format('F jS');
+                } catch (\Throwable $th) {
+                    return 'Not available';
+                }
             }
             return 'Not Available';
-
         }
         return 'Not Available';
     }
